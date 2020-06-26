@@ -1,36 +1,5 @@
 # frozen_string_literal: true
 
-# Generator polynomials will be represented as a hash of lists,
-# e.g. G0 = 111 and G1 = 110 would equal
-# polynomials = {
-#   'G0' => [1, 1, 1],
-#   'G1' => [1, 1, 0]
-# }
-# Finite-state machines will be represented similarly.
-# Take, for example, a convolutional code with constraint length 3 and the aforementioned polynomials.
-# ex_fsa = {
-#   '00' => [
-#     { 'new' => '00', 'out' => '00' },
-#     { 'new' => '10', 'out' => '11' }
-#   ],
-#   '01' => [
-#     { 'new' => '00', 'out' => '10' },
-#     { 'new' => '10', 'out' => '01' }
-#   ],
-#   '10' => [
-#     { 'new' => '01', 'out' => '11' },
-#     { 'new' => '11', 'out' => '00' }
-#   ],
-#   '11' => [
-#     { 'new' => '01', 'out' => '01' },
-#     { 'new' => '11', 'out' => '10' }
-#   ]
-# }
-# Each key is a state, and each value is a list of hashes
-# representing the new state and output when given an input (the index).
-# The starting and accepting state columns are omitted because
-# convolutional codes start at '0'*(k - 1) and don't have accepting states.
-
 # Implements convolutional codes as a class.
 class Conv
   def initialize(const, gen)
@@ -45,7 +14,7 @@ class Conv
     word.is_a?(String) ? word.chars.map(&:to_i) : word
   end
 
-  def self.prod(arr, oth)
+  def self.product(arr, oth)
     arr, oth = [arr, oth].map { |k| Conv.convert(k) }
     (0...arr.size).map { |k| arr[k] * oth[k] }
                   .sum % 2
@@ -59,11 +28,11 @@ class Conv
 
   def output(word)
     word = Conv.convert(word)
-    @gen.values.map { |g| Conv.prod(g, word) }
+    @gen.values.map { |g| Conv.product(g, word) }
         .flatten
   end
 
-  def fsa
+  def state_mach
     max = 2**(@const - 1)
     h = (0...max).map do |k|
       k = (max + k).to_s(2)[1..-1]
@@ -78,7 +47,7 @@ class Conv
 
   def next_path(path, word)
     x, y, z = path
-    value   = ->(n, s) { fsa[y][n][s] }
+    value   = ->(n, s) { state_mach[y][n][s] }
     choice  = lambda do |n|
       ["#{x}#{n}", value[n, 'new'], z + Conv.distance(value[n, 'out'], word)]
     end
