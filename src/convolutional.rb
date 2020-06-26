@@ -65,6 +65,11 @@ class Conv
     paths.size != last.size ? paths = last.map { |k| smallest[k] } : paths
   end
 
+  def puncture(word, matrix)
+    (0...word.size).map { |k| matrix.transpose.flatten[k] == 1 ? word[k] : 'p' }
+                   .filter { |k| k != 'p' }
+  end
+  
   def encode(word)
     word = word.reverse + [0] * (@const - 1)
     (word.size - const).downto(0)
