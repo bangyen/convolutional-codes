@@ -1,5 +1,6 @@
 # Ruby Convolutional Codes
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c27c7ee72adc46038bc117bc56d766a1)](https://www.codacy.com/manual/bangyen99/convolutional-codes?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bangyen/convolutional-codes&amp;utm_campaign=Badge_Grade)\
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/c27c7ee72adc46038bc117bc56d766a1)](https://www.codacy.com/manual/bangyen99/convolutional-codes?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bangyen/convolutional-codes&amp;utm_campaign=Badge_Grade)
+[![Coding Style](https://img.shields.io/badge/code%20style-rubocop-brightgreen)](https://github.com/rubocop-hq/rubocop) \
 Ruby class implementation of convolutional code encoding and decoding.
 
 ## Format
